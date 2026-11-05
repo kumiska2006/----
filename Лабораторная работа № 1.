@@ -3,19 +3,16 @@ from io import StringIO
 from typing import Optional
 
 def parse_csv(data: str) -> list[dict]:
-    """Преобразует CSV-строку в список словарей."""
     reader = csv.DictReader(StringIO(data))
     return [dict(row) for row in reader]
 
 def compute_revenue(rows: list[dict]) -> float:
-    """Вычисляет общую выручку."""
     return sum(
         int(row["quantity"]) * float(row["price"])
         for row in rows
     )
 
 def top_item(rows: list[dict]) -> Optional[dict]:
-    """Возвращает строку с максимальной выручкой."""
     if not rows:
         return None
 
@@ -24,13 +21,11 @@ def top_item(rows: list[dict]) -> Optional[dict]:
         key=lambda row: int(row["quantity"]) * float(row["price"])
     )
 
-# Пример CSV-данных
 data = """date,item,quantity,price
 2026-09-01,Apple,10,50
 2026-09-02,Banana,5,80
 2026-09-03,Orange,20,30"""
 
-# Проверка функций
 rows = parse_csv(data)
 
 print("Распарсенные данные:")
