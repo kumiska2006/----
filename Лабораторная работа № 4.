@@ -1,1 +1,80 @@
 
+from functools import partial
+
+
+# Уровень 1. Ручное каррирование filter_by
+filter_by = lambda key: lambda value: lambda items: [
+    item for item in items if item.get(key) == value
+]
+
+
+# Список товаров
+items = [
+    {"name": "apple", "category": "fruit"},
+    {"name": "carrot", "category": "vegetable"},
+    {"name": "banana", "category": "fruit"},
+    {"name": "potato", "category": "vegetable"},
+    {"name": "orange", "category": "fruit"}
+]
+
+
+# Проверка уровня 1
+filter_by_category = filter_by("category")
+filter_fruits = filter_by_category("fruit")
+
+result = filter_fruits(items)
+
+print("Уровень 1. Фильтрация по категории:")
+print(result)
+
+
+# Уровень 2.
+
+def filter_by_func(key, value, items):
+    return [
+        item for item in items if item.get(key) == value
+    ]
+
+
+filter_by_category_p = partial(filter_by_func, "category")
+
+filter_fruits_p = partial(filter_by_category_p, "fruit")
+
+result_p = filter_fruits_p(items)
+
+print("\nУровень 2. Фильтрация через partial:")
+print(result_p)
+
+
+# Уровень 3. 
+
+greater_than = lambda threshold: lambda x: x > threshold
+
+numbers = [1, 6, 8, 2, 9, 3, 12, 4, 15]
+
+over_five = greater_than(5)
+
+filtered = list(filter(over_five, numbers))
+
+print("\nУровень 3. Числа больше пяти:")
+print(filtered)
+
+
+# Дополнительная проверка greater_than
+over_ten = greater_than(10)
+
+filtered_over_ten = list(filter(over_ten, numbers))
+
+print("\nЧисла больше десяти:")
+print(filtered_over_ten)
+
+
+# Уровень 4. 
+
+print("\nУровень 4. :")
+
+print("Каррирование позволяет создавать специализированные функции.")
+print("Можно заранее задавать параметры фильтрации.")
+print("Исходные списки не изменяются.")
+print("Каррирование необязательно, но делает код более гибким.")
+
