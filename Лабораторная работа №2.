@@ -1,1 +1,45 @@
 
+import re
+from typing import Optional
+
+
+# Уровень 1. 
+def split_words(text: str) -> list[str]:
+    return re.findall(r'\b\w+\b', text.lower())
+
+
+# Уровень 2. 
+def count_word_frequencies(words: list[str]) -> dict[str, int]:
+    return {
+        word: words.count(word)
+        for word in set(words)
+    }
+
+
+# Уровень 3.
+def top_word(freq: dict[str, int]) -> Optional[str]:
+    if not freq:
+        return None
+
+    return max(freq, key=freq.get)
+
+
+# Проверка работы всех функций
+text = "Python — простой язык. Python очень удобный!"
+
+words = split_words(text)
+frequencies = count_word_frequencies(words)
+most_common = top_word(frequencies)
+
+print("Исходный текст:", text)
+print("Список слов:", words)
+print("Частота слов:", frequencies)
+print("Самое частое слово:", most_common)
+
+
+# Проверка пустых данных
+print("\nПроверка пустых данных:")
+print("Пустая строка:", split_words(""))
+print("Пустой список:", count_word_frequencies([]))
+print("Пустой словарь:", top_word({}))
+
