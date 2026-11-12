@@ -2,7 +2,7 @@
 from functools import partial
 
 
-# Уровень 1. Ручное каррирование filter_by
+# Уровень 1. 
 filter_by = lambda key: lambda value: lambda items: [
     item for item in items if item.get(key) == value
 ]
