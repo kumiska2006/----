@@ -1,0 +1,68 @@
+
+from functools import reduce
+
+
+# Исходный список студентов
+students = [
+    {"name": "Анна", "age": 20, "grade": 4.5},
+    {"name": "Борис", "age": 22, "grade": 3.8},
+    {"name": "Виктор", "age": 19, "grade": 4.2},
+    {"name": "Галина", "age": 21, "grade": 4.9},
+    {"name": "Дмитрий", "age": 23, "grade": 3.5},
+]
+
+
+# Уровень 1. 
+student_info = list(
+    map(
+        lambda student: f"Имя: {student['name']}, Оценка: {student['grade']}",
+        students
+    )
+)
+
+print("Уровень 1. Информация о студентах:")
+for info in student_info:
+    print(info)
+
+
+# Уровень 2. 
+filtered_students = list(
+    filter(
+        lambda student: student["grade"] > 4.0,
+        students
+    )
+)
+
+print("\nУровень 2. Студенты с оценкой выше 4.0:")
+for student in filtered_students:
+    print(student)
+
+
+# Уровень 3. 
+
+total_age = reduce(
+    lambda total, student: total + student["age"],
+    filtered_students,
+    0
+)
+
+if filtered_students:
+    average_age = total_age / len(filtered_students)
+else:
+    average_age = 0
+
+print("\nУровень 3. Средний возраст отобранных студентов:")
+print(average_age)
+
+
+# Уровень 4. 
+
+print("\nУровень 4. Рефлексия:")
+
+print("Функциональный подход использует map, filter и reduce.")
+print("Он позволяет обрабатывать данные без изменения исходного списка.")
+print("Код получается компактным и удобным для повторного использования.")
+
+print("\nИмперативный подход использует циклы и переменные.")
+print("Он может быть понятнее новичкам, но требует больше кода.")
+print("При изменении списков и переменных есть риск ошибок.")
