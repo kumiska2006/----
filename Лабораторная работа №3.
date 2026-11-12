@@ -1,0 +1,88 @@
+
+from enum import Enum
+from dataclasses import dataclass
+from typing import Generic, TypeVar, Union
+
+
+# Уровень 1. 
+class LoadState(Enum):
+    LOADING = "loading"
+    SUCCESS = "success"
+    ERROR = "error"
+
+
+# Уровень 2.
+@dataclass(frozen=True)
+class User:
+    name: str
+    age: int
+    email: str
+
+
+# Уровень 3. 
+T = TypeVar("T")
+E = TypeVar("E")
+
+
+@dataclass(frozen=True)
+class Success(Generic[T]):
+    value: T
+
+
+@dataclass(frozen=True)
+class Failure(Generic[E]):
+    error: E
+
+
+Result = Union[Success[T], Failure[E]]
+
+
+# Функция загрузки пользователей
+def load_users() -> Result[list[User], str]:
+    users = [
+        User("Иван", 25, "ivan@example.com"),
+        User("Мария", 30, "maria@example.com"),
+        User("Алексей", 22, "alex@example.com")
+    ]
+
+    if not users:
+        return Failure("Список пользователей пуст")
+
+    return Success(users)
+
+
+# Проверка работы программы
+def main():
+    # Проверяем LoadState
+    state = LoadState.LOADING
+    print("Состояние загрузки:", state.value)
+
+    # Загружаем пользователей
+    result = load_users()
+
+    if isinstance(result, Success):
+        print("\nПользователи успешно загружены:")
+
+        for user in result.value:
+            print(
+                f"Имя: {user.name}, "
+                f"Возраст: {user.age}, "
+                f"Email: {user.email}"
+            )
+
+        state = LoadState.SUCCESS
+
+    elif isinstance(result, Failure):
+        print("\nОшибка:", result.error)
+        state = LoadState.ERROR
+
+    print("\nТекущее состояние:", state.value)
+
+    # Уровень 4. Рефлексия
+    print("\nМощность типов:")
+    print("LoadState:", len(LoadState))
+    print("Result[list[User], str]: теоретически бесконечна")
+
+
+if __name__ == "__main__":
+    main()
